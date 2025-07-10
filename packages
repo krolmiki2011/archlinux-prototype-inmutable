@@ -1,7 +1,9 @@
 archlinux-keyring
+pacman-mirrorlist
 base
 arch-install-scripts
 linux
+base-devel
 linux-headers
 linux-firmware
 mkinitcpio
