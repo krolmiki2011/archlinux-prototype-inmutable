@@ -9,6 +9,7 @@ sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf
 
 # Inicjalizacja kluczy
 pacman-key --init
+pacman-key --populate
 
 # Aktualizacja systemu
 pacman --noconfirm -Syyuu
@@ -29,4 +30,4 @@ echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arc
 # Ponowna synchronizacja z nowym mirrorlist
 pacman --noconfirm -Syyuu
 
-rm build-image
+rm /tmp/build-image
