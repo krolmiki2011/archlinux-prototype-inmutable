@@ -1,0 +1,32 @@
+#!/bin/bash
+set -e
+
+# Automatyczne pobieranie kluczy
+echo -e "keyserver-options auto-key-retrieve" >> /etc/pacman.d/gnupg/gpg.conf
+
+# Wyłącz sprawdzanie miejsca
+sed -i '/CheckSpace/s/^/#/g' /etc/pacman.conf
+
+# Inicjalizacja kluczy
+pacman-key --init
+
+# Aktualizacja systemu
+pacman --noconfirm -Syyuu
+
+# Instalacja pakietów z pliku (pomija komentarze)
+pacman --noconfirm -S $(grep -vE '^\s*#' /tmp/packages | xargs)
+
+# Uprawnienia sudo dla grupy wheel
+echo "%wheel ALL=(ALL:ALL) ALL" >> /etc/sudoers
+
+# Ustawienie opcji GPG dla innych narzędzi
+mkdir -p /etc/gnupg/
+echo -e "keyserver-options auto-key-retrieve" >> /etc/gnupg/gpg.conf
+
+# Ustawienie archiwalnego mirrora (upewnij się, że ARCHIVE_DATE jest ustawione wcześniej)
+echo "Server=https://archive.archlinux.org/repos/${ARCHIVE_DATE}/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
+
+# Ponowna synchronizacja z nowym mirrorlist
+pacman --noconfirm -Syyuu
+
+rm build-image
