@@ -1,10 +1,10 @@
+archlinux-keyring
+base
 arch-install-scripts
 linux
 linux-headers
 linux-firmware
 mkinitcpio
-base
-base-devel
 wget
 btrfs-progs
 fmt
